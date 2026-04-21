@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F5F5">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#2196F3"
+        android:paddingRight="20dp"
+        android:paddingLeft="20dp"
+        android:paddingTop="40dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PHỤ KIỆN CÔNG NGHỆ"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Quản lý phụ kiện MacBook, Chuột, Bàn phím..."
+            android:textColor="#E0E0E0"
+            android:textSize="14sp"
+            android:layout_gravity="center" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="15dp"
+            android:background="#2196F3"
+            android:weightSum="5">
+
+            <Button
+                android:id="@+id/btnAll"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="4dp"
+                android:text="TẤT CẢ"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:background="@drawable/button_filter"
+                android:textColor="#FFFFFF" />
+
+            <Button
+                android:id="@+id/btnMac"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="4dp"
+                android:text="MACBOOK"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:background="@drawable/button_filter_mac"
+                android:textColor="#FFFFFF" />
+
+            <Button
+                android:id="@+id/btnChuot"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="4dp"
+                android:text="CHUỘT"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:background="@drawable/button_filter"
+                android:textColor="#FFFFFF" />
+
+            <Button
+                android:id="@+id/btnBanPhim"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="4dp"
+                android:text="BÀN PHÍM"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:background="@drawable/button_filter"
+                android:textColor="#FFFFFF" />
+
+            <Button
+                android:id="@+id/btnOpLung"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="4dp"
+                android:text="ỐP LƯNG"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:background="@drawable/button_filter"
+                android:textColor="#FFFFFF" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnThem"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="+ THÊM PHỤ KIỆN MỚI"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:background="@drawable/button_add"
+            android:textColor="#FFFFFF"
+            android:elevation="4dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"
+        android:layout_margin="15dp"
+        android:layout_marginTop="0dp"
+        android:elevation="2dp">
+
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:divider="#E0E0E0"
+            android:dividerHeight="1dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="#F5F5F5">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="💡 Gợi ý: Nhấn giữ vào phụ kiện để sửa hoặc xóa"
+            android:textSize="12sp"
+            android:textColor="#999999"
+            android:gravity="center"
+            android:padding="10dp"
+            android:clipToPadding="false"
+            android:scrollbarStyle="outsideOverlay" />
+
+    </LinearLayout>
+
+</LinearLayout>
