@@ -6,18 +6,18 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "quanlyphukien.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final String DATABASE_NAME = "quanlynongsan.db";
+    private static final int DATABASE_VERSION = 1;
 
-    private static final String TABLE_LOAI = "loai";
-    private static final String COL_MA_LOAI = "maLoai";
-    private static final String COL_TEN_LOAI = "tenLoai";
+    public static final String TABLE_LOAI = "loai";
+    public static final String COL_MA_LOAI = "maLoai";
+    public static final String COL_TEN_LOAI = "tenLoai";
 
-    private static final String TABLE_PHUKIEN = "phukien";
-    private static final String COL_MA = "ma";
-    private static final String COL_TEN = "ten";
-    private static final String COL_TUONG_THICH_HANG = "tuongThichHang";
-    private static final String COL_GIA = "gia";
+    public static final String TABLE_NONGSAN = "nongsan";
+    public static final String COL_MA = "ma";
+    public static final String COL_TEN = "ten";
+    public static final String COL_NGAY_THU_HOACH = "ngayThuHoach";
+    public static final String COL_GIA = "gia";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -30,34 +30,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL_TEN_LOAI + " TEXT NOT NULL)";
         db.execSQL(createLoaiTable);
 
-        db.execSQL("INSERT INTO " + TABLE_LOAI + " (" + COL_TEN_LOAI + ") VALUES ('Chuột')");
-        db.execSQL("INSERT INTO " + TABLE_LOAI + " (" + COL_TEN_LOAI + ") VALUES ('Bàn phím')");
-        db.execSQL("INSERT INTO " + TABLE_LOAI + " (" + COL_TEN_LOAI + ") VALUES ('Ốp lưng')");
-        db.execSQL("INSERT INTO " + TABLE_LOAI + " (" + COL_TEN_LOAI + ") VALUES ('MacBook')");
+        db.execSQL("INSERT INTO " + TABLE_LOAI + " (" + COL_TEN_LOAI + ") VALUES ('Rau')");
+        db.execSQL("INSERT INTO " + TABLE_LOAI + " (" + COL_TEN_LOAI + ") VALUES ('Củ')");
+        db.execSQL("INSERT INTO " + TABLE_LOAI + " (" + COL_TEN_LOAI + ") VALUES ('Trái cây')");
 
-        String createPhuKienTable = "CREATE TABLE " + TABLE_PHUKIEN + " (" +
+        String createNongSanTable = "CREATE TABLE " + TABLE_NONGSAN + " (" +
                 COL_MA + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COL_TEN + " TEXT NOT NULL, " +
                 COL_MA_LOAI + " INTEGER, " +
-                COL_TUONG_THICH_HANG + " TEXT, " +
+                COL_NGAY_THU_HOACH + " TEXT, " +
                 COL_GIA + " INTEGER, " +
                 "FOREIGN KEY(" + COL_MA_LOAI + ") REFERENCES " + TABLE_LOAI + "(" + COL_MA_LOAI + "))";
-        db.execSQL(createPhuKienTable);
+        db.execSQL(createNongSanTable);
 
-        db.execSQL("INSERT INTO " + TABLE_PHUKIEN + " (ten, maLoai, tuongThichHang, gia) VALUES ('Chuột không dây Logitech', 1, 'MacBook', 450000)");
-        db.execSQL("INSERT INTO " + TABLE_PHUKIEN + " (ten, maLoai, tuongThichHang, gia) VALUES ('Ốp lưng MacBook Air', 3, 'MacBook', 250000)");
-        db.execSQL("INSERT INTO " + TABLE_PHUKIEN + " (ten, maLoai, tuongThichHang, gia) VALUES ('Bàn phím cơ', 2, 'Dell', 1200000)");
-        db.execSQL("INSERT INTO " + TABLE_PHUKIEN + " (ten, maLoai, tuongThichHang, gia) VALUES ('Chuột Bluetooth Magic Mouse', 1, 'MacBook', 480000)");
-        db.execSQL("INSERT INTO " + TABLE_PHUKIEN + " (ten, maLoai, tuongThichHang, gia) VALUES ('Ốp lưng MacBook Pro', 3, 'MacBook', 350000)");
-        db.execSQL("INSERT INTO " + TABLE_PHUKIEN + " (ten, maLoai, tuongThichHang, gia) VALUES ('Bàn phím cơ', 2, 'Dell', 360000)");
+        // Sample data with recent dates for testing "7 days" query
+        db.execSQL("INSERT INTO " + TABLE_NONGSAN + " (ten, maLoai, ngayThuHoach, gia) VALUES ('Cải bẹ xanh', 1, '2023-10-25', 15000)");
+        db.execSQL("INSERT INTO " + TABLE_NONGSAN + " (ten, maLoai, ngayThuHoach, gia) VALUES ('Cà rốt', 2, '2023-10-24', 25000)");
+        db.execSQL("INSERT INTO " + TABLE_NONGSAN + " (ten, maLoai, ngayThuHoach, gia) VALUES ('Táo Ninh Thuận', 3, '2023-10-23', 45000)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PHUKIEN);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NONGSAN);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOAI);
-
         onCreate(db);
     }
-
 }

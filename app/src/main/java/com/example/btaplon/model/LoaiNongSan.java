@@ -1,10 +1,10 @@
 package com.example.btaplon.model;
 
-public class LoaiPhuKien {
+public class LoaiNongSan {
     private int maLoai;
     private String tenLoai;
 
-    public LoaiPhuKien(int maLoai, String tenLoai) {
+    public LoaiNongSan(int maLoai, String tenLoai) {
         this.maLoai = maLoai;
         this.tenLoai = tenLoai;
     }
@@ -16,6 +16,6 @@ public class LoaiPhuKien {
 
     @Override
     public String toString() {
-        return maLoai + " - " + tenLoai;
+        return tenLoai;
     }
 }

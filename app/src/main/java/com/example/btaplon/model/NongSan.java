@@ -1,17 +1,17 @@
 package com.example.btaplon.model;
 
-public class PhuKien {
+public class NongSan {
     private int ma;
     private String ten;
     private int maLoai;
-    private String tuongThichHang;
+    private String ngayThuHoach;
     private int gia;
 
-    public PhuKien(int ma, String ten, int maLoai, String tuongThichHang, int gia) {
+    public NongSan(int ma, String ten, int maLoai, String ngayThuHoach, int gia) {
         this.ma = ma;
         this.ten = ten;
         this.maLoai = maLoai;
-        this.tuongThichHang = tuongThichHang;
+        this.ngayThuHoach = ngayThuHoach;
         this.gia = gia;
     }
 
@@ -21,13 +21,13 @@ public class PhuKien {
     public void setTen(String ten) { this.ten = ten; }
     public int getMaLoai() { return maLoai; }
     public void setMaLoai(int maLoai) { this.maLoai = maLoai; }
-    public String getTuongThichHang() { return tuongThichHang; }
-    public void setTuongThichHang(String tuongThichHang) { this.tuongThichHang = tuongThichHang; }
+    public String getNgayThuHoach() { return ngayThuHoach; }
+    public void setNgayThuHoach(String ngayThuHoach) { this.ngayThuHoach = ngayThuHoach; }
     public int getGia() { return gia; }
     public void setGia(int gia) { this.gia = gia; }
 
     @Override
     public String toString() {
-        return ma + " | " + ten + " - " + tuongThichHang + " - " + gia + "đ";
+        return ma + " | " + ten + " - " + ngayThuHoach + " - " + gia + "đ";
     }
 }

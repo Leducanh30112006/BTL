@@ -1,59 +1,69 @@
 package com.example.btaplon.dialog;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.widget.*;
-import com.example.btaplon.model.LoaiPhuKien;
-import com.example.btaplon.model.PhuKien;
-import com.example.btaplon.model.PhuKienRepository;
+import com.example.btaplon.model.LoaiNongSan;
+import com.example.btaplon.model.NongSan;
+import com.example.btaplon.model.NongSanRepository;
 import java.util.ArrayList;
+import java.util.Calendar;
 
-public class SuaXoaPhuKienDialog {
+public class SuaXoaNongSanDialog {
     private Context context;
-    private PhuKienRepository repository;
-    private PhuKien phuKien;
+    private NongSanRepository repository;
+    private NongSan nongSan;
     private Runnable onSuccessListener;
 
-    public SuaXoaPhuKienDialog(Context context, PhuKienRepository repository,
-                               PhuKien phuKien, Runnable onSuccessListener) {
+    public SuaXoaNongSanDialog(Context context, NongSanRepository repository,
+                               NongSan nongSan, Runnable onSuccessListener) {
         this.context = context;
         this.repository = repository;
-        this.phuKien = phuKien;
+        this.nongSan = nongSan;
         this.onSuccessListener = onSuccessListener;
     }
 
     public void show() {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("SỬA / XÓA PHỤ KIỆN");
+        builder.setTitle("SỬA / XÓA NÔNG SẢN");
 
         LinearLayout layout = new LinearLayout(context);
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setPadding(50, 30, 50, 30);
 
         EditText edtTen = new EditText(context);
-        edtTen.setText(phuKien.getTen());
-        edtTen.setHint("Tên phụ kiện");
+        edtTen.setText(nongSan.getTen());
+        edtTen.setHint("Tên nông sản");
         layout.addView(edtTen);
 
-        EditText edtHang = new EditText(context);
-        edtHang.setText(phuKien.getTuongThichHang());
-        edtHang.setHint("Hãng tương thích");
-        layout.addView(edtHang);
+        EditText edtNgay = new EditText(context);
+        edtNgay.setText(nongSan.getNgayThuHoach());
+        edtNgay.setHint("Ngày thu hoạch (YYYY-MM-DD)");
+        edtNgay.setFocusable(false);
+        edtNgay.setOnClickListener(v -> {
+            Calendar c = Calendar.getInstance();
+            new DatePickerDialog(context, (view, year, month, dayOfMonth) -> {
+                String date = String.format("%d-%02d-%02d", year, month + 1, dayOfMonth);
+                edtNgay.setText(date);
+            }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
+        });
+        layout.addView(edtNgay);
 
         EditText edtGia = new EditText(context);
-        edtGia.setText(String.valueOf(phuKien.getGia()));
+        edtGia.setText(String.valueOf(nongSan.getGia()));
         edtGia.setHint("Giá");
         edtGia.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
         layout.addView(edtGia);
 
         Spinner spinnerLoai = new Spinner(context);
-        ArrayList<LoaiPhuKien> dsLoai = repository.getLoaiPhuKien();
-        ArrayAdapter<LoaiPhuKien> spinnerAdapter = new ArrayAdapter<>(context,
+        ArrayList<LoaiNongSan> dsLoai = repository.getLoaiNongSan();
+        ArrayAdapter<LoaiNongSan> spinnerAdapter = new ArrayAdapter<>(context,
                 android.R.layout.simple_spinner_item, dsLoai);
         spinnerLoai.setAdapter(spinnerAdapter);
 
         for (int i = 0; i < dsLoai.size(); i++) {
-            if (dsLoai.get(i).getMaLoai() == phuKien.getMaLoai()) {
+            if (dsLoai.get(i).getMaLoai() == nongSan.getMaLoai()) {
                 spinnerLoai.setSelection(i);
                 break;
             }
@@ -64,23 +74,23 @@ public class SuaXoaPhuKienDialog {
 
         builder.setPositiveButton("SỬA", (dialog, which) -> {
             String ten = edtTen.getText().toString().trim();
-            String hang = edtHang.getText().toString().trim();
+            String ngay = edtNgay.getText().toString().trim();
             String giaStr = edtGia.getText().toString().trim();
 
-            if (ten.isEmpty() || hang.isEmpty() || giaStr.isEmpty()) {
+            if (ten.isEmpty() || ngay.isEmpty() || giaStr.isEmpty()) {
                 Toast.makeText(context, "Vui lòng nhập đầy đủ", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             int gia = Integer.parseInt(giaStr);
-            LoaiPhuKien selectedLoai = (LoaiPhuKien) spinnerLoai.getSelectedItem();
+            LoaiNongSan selectedLoai = (LoaiNongSan) spinnerLoai.getSelectedItem();
 
-            phuKien.setTen(ten);
-            phuKien.setTuongThichHang(hang);
-            phuKien.setGia(gia);
-            phuKien.setMaLoai(selectedLoai.getMaLoai());
+            nongSan.setTen(ten);
+            nongSan.setNgayThuHoach(ngay);
+            nongSan.setGia(gia);
+            nongSan.setMaLoai(selectedLoai.getMaLoai());
 
-            if (repository.suaPhuKien(phuKien)) {
+            if (repository.suaNongSan(nongSan)) {
                 Toast.makeText(context, "Sửa thành công!", Toast.LENGTH_SHORT).show();
                 onSuccessListener.run();
             } else {
@@ -91,9 +101,9 @@ public class SuaXoaPhuKienDialog {
         builder.setNeutralButton("XÓA", (dialog, which) -> {
             new AlertDialog.Builder(context)
                     .setTitle("Xác nhận xóa")
-                    .setMessage("Bạn có chắc muốn xóa phụ kiện " + phuKien.getTen() + "?")
+                    .setMessage("Bạn có chắc muốn xóa " + nongSan.getTen() + "?")
                     .setPositiveButton("XÓA", (d, w) -> {
-                        if (repository.xoaPhuKien(phuKien.getMa())) {
+                        if (repository.xoaNongSan(nongSan.getMa())) {
                             Toast.makeText(context, "Xóa thành công!", Toast.LENGTH_SHORT).show();
                             onSuccessListener.run();
                         } else {

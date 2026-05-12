@@ -6,20 +6,20 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import com.example.btaplon.connection.DatabaseHelper;
 
-public class PhuKienRepository {
+public class NongSanRepository {
     private DatabaseHelper dbHelper;
 
-    public PhuKienRepository(Context context) {
+    public NongSanRepository(Context context) {
         this.dbHelper = new DatabaseHelper(context);
     }
 
-    public ArrayList<PhuKien> getAllPhuKien() {
-        ArrayList<PhuKien> list = new ArrayList<>();
+    public ArrayList<NongSan> getAllNongSan() {
+        ArrayList<NongSan> list = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM phukien ORDER BY ma DESC", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + DatabaseHelper.TABLE_NONGSAN + " ORDER BY " + DatabaseHelper.COL_MA + " DESC", null);
 
         while (cursor.moveToNext()) {
-            list.add(new PhuKien(
+            list.add(new NongSan(
                     cursor.getInt(0),
                     cursor.getString(1),
                     cursor.getInt(2),
@@ -32,13 +32,13 @@ public class PhuKienRepository {
         return list;
     }
 
-    public ArrayList<PhuKien> getPhuKienTheoLoai(int maLoai) {
-        ArrayList<PhuKien> list = new ArrayList<>();
+    public ArrayList<NongSan> getNongSanTheoLoai(int maLoai) {
+        ArrayList<NongSan> list = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM phukien WHERE maLoai = " + maLoai, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + DatabaseHelper.TABLE_NONGSAN + " WHERE " + DatabaseHelper.COL_MA_LOAI + " = " + maLoai, null);
 
         while (cursor.moveToNext()) {
-            list.add(new PhuKien(
+            list.add(new NongSan(
                     cursor.getInt(0),
                     cursor.getString(1),
                     cursor.getInt(2),
@@ -51,16 +51,16 @@ public class PhuKienRepository {
         return list;
     }
 
-    public ArrayList<PhuKien> timMacBookDuoi500k() {
-        ArrayList<PhuKien> list = new ArrayList<>();
+    public ArrayList<NongSan> getThuHoachGanDay() {
+        ArrayList<NongSan> list = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery(
-                "SELECT * FROM phukien WHERE tuongThichHang LIKE '%MacBook%' AND gia < 500000",
-                null
-        );
+        // SQLite query for last 7 days. Assuming YYYY-MM-DD format.
+        String sql = "SELECT * FROM " + DatabaseHelper.TABLE_NONGSAN + 
+                     " WHERE " + DatabaseHelper.COL_NGAY_THU_HOACH + " >= date('now', '-7 days')";
+        Cursor cursor = db.rawQuery(sql, null);
 
         while (cursor.moveToNext()) {
-            list.add(new PhuKien(
+            list.add(new NongSan(
                     cursor.getInt(0),
                     cursor.getString(1),
                     cursor.getInt(2),
@@ -73,32 +73,30 @@ public class PhuKienRepository {
         return list;
     }
 
-    public ArrayList<LoaiPhuKien> getLoaiPhuKien() {
-        ArrayList<LoaiPhuKien> list = new ArrayList<>();
+    public ArrayList<LoaiNongSan> getLoaiNongSan() {
+        ArrayList<LoaiNongSan> list = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-
         try {
-            Cursor cursor = db.rawQuery("SELECT * FROM loai", null);
-
+            Cursor cursor = db.rawQuery("SELECT * FROM " + DatabaseHelper.TABLE_LOAI, null);
             while (cursor.moveToNext()) {
-                list.add(new LoaiPhuKien(cursor.getInt(0), cursor.getString(1)));
+                list.add(new LoaiNongSan(cursor.getInt(0), cursor.getString(1)));
             }
             cursor.close();
         } catch (Exception e) {
             e.printStackTrace();
-            // Nếu chưa có bảng, trả về list rỗng
         } finally {
             db.close();
         }
-
         return list;
     }
 
-    public boolean themPhuKien(PhuKien phuKien) {
+    public boolean themNongSan(NongSan ns) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String sql = String.format(
-                "INSERT INTO phukien (ten, maLoai, tuongThichHang, gia) VALUES ('%s', %d, '%s', %d)",
-                phuKien.getTen(), phuKien.getMaLoai(), phuKien.getTuongThichHang(), phuKien.getGia()
+                "INSERT INTO %s (%s, %s, %s, %s) VALUES ('%s', %d, '%s', %d)",
+                DatabaseHelper.TABLE_NONGSAN, DatabaseHelper.COL_TEN, DatabaseHelper.COL_MA_LOAI, 
+                DatabaseHelper.COL_NGAY_THU_HOACH, DatabaseHelper.COL_GIA,
+                ns.getTen(), ns.getMaLoai(), ns.getNgayThuHoach(), ns.getGia()
         );
         try {
             db.execSQL(sql);
@@ -110,12 +108,16 @@ public class PhuKienRepository {
         }
     }
 
-    public boolean suaPhuKien(PhuKien phuKien) {
+    public boolean suaNongSan(NongSan ns) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String sql = String.format(
-                "UPDATE phukien SET ten='%s', maLoai=%d, tuongThichHang='%s', gia=%d WHERE ma=%d",
-                phuKien.getTen(), phuKien.getMaLoai(), phuKien.getTuongThichHang(),
-                phuKien.getGia(), phuKien.getMa()
+                "UPDATE %s SET %s='%s', %s=%d, %s='%s', %s=%d WHERE %s=%d",
+                DatabaseHelper.TABLE_NONGSAN, 
+                DatabaseHelper.COL_TEN, ns.getTen(),
+                DatabaseHelper.COL_MA_LOAI, ns.getMaLoai(),
+                DatabaseHelper.COL_NGAY_THU_HOACH, ns.getNgayThuHoach(),
+                DatabaseHelper.COL_GIA, ns.getGia(),
+                DatabaseHelper.COL_MA, ns.getMa()
         );
         try {
             db.execSQL(sql);
@@ -127,34 +129,15 @@ public class PhuKienRepository {
         }
     }
 
-    public boolean xoaPhuKien(int ma) {
+    public boolean xoaNongSan(int ma) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         try {
-            db.execSQL("DELETE FROM phukien WHERE ma = " + ma);
+            db.execSQL("DELETE FROM " + DatabaseHelper.TABLE_NONGSAN + " WHERE " + DatabaseHelper.COL_MA + " = " + ma);
             return true;
         } catch (Exception e) {
             return false;
         } finally {
             db.close();
         }
-    }
-
-    public PhuKien getPhuKienById(int ma) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM phukien WHERE ma = " + ma, null);
-        PhuKien phuKien = null;
-
-        if (cursor.moveToFirst()) {
-            phuKien = new PhuKien(
-                    cursor.getInt(0),
-                    cursor.getString(1),
-                    cursor.getInt(2),
-                    cursor.getString(3),
-                    cursor.getInt(4)
-            );
-        }
-        cursor.close();
-        db.close();
-        return phuKien;
     }
 }

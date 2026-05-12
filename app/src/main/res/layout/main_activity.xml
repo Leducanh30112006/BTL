@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -9,105 +8,93 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#2196F3"
-        android:paddingRight="20dp"
-        android:paddingLeft="20dp"
+        android:background="#4CAF50"
+        android:padding="20dp"
         android:paddingTop="40dp"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="PHỤ KIỆN CÔNG NGHỆ"
+            android:text="QUẢN LÝ NÔNG SẢN HỮU CƠ"
             android:textColor="#FFFFFF"
-            android:textSize="24sp"
+            android:textSize="22sp"
             android:textStyle="bold"
             android:layout_gravity="center" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Quản lý phụ kiện MacBook, Chuột, Bàn phím..."
-            android:textColor="#E0E0E0"
+            android:text="Rau sạch - Củ quả - Trái cây tươi"
+            android:textColor="#E8F5E9"
             android:textSize="14sp"
             android:layout_gravity="center" />
     </LinearLayout>
 
-    <ScrollView
+    <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        android:background="#4CAF50">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="15dp"
-            android:background="#2196F3"
-            android:weightSum="5">
+            android:padding="10dp">
 
             <Button
                 android:id="@+id/btnAll"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_margin="4dp"
                 android:text="TẤT CẢ"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:background="@drawable/button_filter"
+                android:textSize="11sp"
+                android:backgroundTint="#FFFFFF"
+                android:textColor="#4CAF50" />
+
+            <Button
+                android:id="@+id/btnRecent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:text="7 NGÀY GẦN NHẤT"
+                android:textSize="11sp"
+                android:backgroundTint="#FFC107"
+                android:textColor="#000000" />
+
+            <Button
+                android:id="@+id/btnRau"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:text="RAU"
+                android:textSize="11sp"
+                android:backgroundTint="#81C784"
                 android:textColor="#FFFFFF" />
 
             <Button
-                android:id="@+id/btnMac"
-                android:layout_width="0dp"
+                android:id="@+id/btnCu"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_margin="4dp"
-                android:text="MACBOOK"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:background="@drawable/button_filter_mac"
+                android:text="CỦ"
+                android:textSize="11sp"
+                android:backgroundTint="#81C784"
                 android:textColor="#FFFFFF" />
 
             <Button
-                android:id="@+id/btnChuot"
-                android:layout_width="0dp"
+                android:id="@+id/btnTraiCay"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_margin="4dp"
-                android:text="CHUỘT"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:background="@drawable/button_filter"
-                android:textColor="#FFFFFF" />
-
-            <Button
-                android:id="@+id/btnBanPhim"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_margin="4dp"
-                android:text="BÀN PHÍM"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:background="@drawable/button_filter"
-                android:textColor="#FFFFFF" />
-
-            <Button
-                android:id="@+id/btnOpLung"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_margin="4dp"
-                android:text="ỐP LƯNG"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:background="@drawable/button_filter"
+                android:text="TRÁI CÂY"
+                android:textSize="11sp"
+                android:backgroundTint="#81C784"
                 android:textColor="#FFFFFF" />
 
         </LinearLayout>
-    </ScrollView>
+    </HorizontalScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -118,51 +105,33 @@
         <Button
             android:id="@+id/btnThem"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="+ THÊM PHỤ KIỆN MỚI"
+            android:layout_height="55dp"
+            android:text="+ THÊM NÔNG SẢN"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:background="@drawable/button_add"
-            android:textColor="#FFFFFF"
-            android:elevation="4dp" />
+            android:backgroundTint="#2E7D32"
+            android:textColor="#FFFFFF" />
 
     </LinearLayout>
 
-    <LinearLayout
+    <ListView
+        android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginHorizontal="15dp"
         android:background="#FFFFFF"
-        android:layout_margin="15dp"
-        android:layout_marginTop="0dp"
-        android:elevation="2dp">
+        android:divider="#EEEEEE"
+        android:dividerHeight="1dp"
+        android:padding="5dp" />
 
-        <ListView
-            android:id="@+id/listView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="10dp"
-            android:divider="#E0E0E0"
-            android:dividerHeight="1dp" />
-
-    </LinearLayout>
-
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:background="#F5F5F5">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="💡 Gợi ý: Nhấn giữ vào phụ kiện để sửa hoặc xóa"
-            android:textSize="12sp"
-            android:textColor="#999999"
-            android:gravity="center"
-            android:padding="10dp"
-            android:clipToPadding="false"
-            android:scrollbarStyle="outsideOverlay" />
-
-    </LinearLayout>
+        android:text="Nhấn giữ sản phẩm để Sửa/Xóa"
+        android:textSize="12sp"
+        android:textColor="#9E9E9E"
+        android:gravity="center"
+        android:padding="10dp" />
 
 </LinearLayout>

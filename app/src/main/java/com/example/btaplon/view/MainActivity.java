@@ -4,27 +4,27 @@ import android.os.Bundle;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.btaplon.R;
-import com.example.btaplon.adapter.PhuKienAdapter;
-import com.example.btaplon.dialog.ThemPhuKienDialog;
-import com.example.btaplon.dialog.SuaXoaPhuKienDialog;
-import com.example.btaplon.model.PhuKien;
-import com.example.btaplon.model.PhuKienRepository;
+import com.example.btaplon.adapter.NongSanAdapter;
+import com.example.btaplon.dialog.ThemNongSanDialog;
+import com.example.btaplon.dialog.SuaXoaNongSanDialog;
+import com.example.btaplon.model.NongSan;
+import com.example.btaplon.model.NongSanRepository;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private PhuKienRepository repository;
+    private NongSanRepository repository;
     private ListView listView;
-    private PhuKienAdapter adapter;
+    private NongSanAdapter adapter;
     private String loaiHienTai = "all";
-    private List<PhuKien> currentList;
+    private List<NongSan> currentList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        repository = new PhuKienRepository(this);
+        repository = new NongSanRepository(this);
         listView = findViewById(R.id.listView);
 
         setupButtons();
@@ -38,35 +38,35 @@ public class MainActivity extends AppCompatActivity {
             capNhatDanhSach();
         });
 
-        findViewById(R.id.btnMac).setOnClickListener(v -> {
-            loaiHienTai = "macbook";
+        findViewById(R.id.btnRecent).setOnClickListener(v -> {
+            loaiHienTai = "recent";
             capNhatDanhSach();
         });
 
-        findViewById(R.id.btnChuot).setOnClickListener(v -> {
-            loaiHienTai = "chuot";
+        findViewById(R.id.btnRau).setOnClickListener(v -> {
+            loaiHienTai = "rau";
             capNhatDanhSach();
         });
 
-        findViewById(R.id.btnBanPhim).setOnClickListener(v -> {
-            loaiHienTai = "banphim";
+        findViewById(R.id.btnCu).setOnClickListener(v -> {
+            loaiHienTai = "cu";
             capNhatDanhSach();
         });
 
-        findViewById(R.id.btnOpLung).setOnClickListener(v -> {
-            loaiHienTai = "oplung";
+        findViewById(R.id.btnTraiCay).setOnClickListener(v -> {
+            loaiHienTai = "traicay";
             capNhatDanhSach();
         });
 
         findViewById(R.id.btnThem).setOnClickListener(v -> {
-            new ThemPhuKienDialog(this, repository, this::capNhatDanhSach).show();
+            new ThemNongSanDialog(this, repository, this::capNhatDanhSach).show();
         });
     }
 
     private void setupListViewLongClick() {
         listView.setOnItemLongClickListener((parent, view, position, id) -> {
-            PhuKien selected = currentList.get(position);
-            new SuaXoaPhuKienDialog(this, repository, selected, this::capNhatDanhSach).show();
+            NongSan selected = currentList.get(position);
+            new SuaXoaNongSanDialog(this, repository, selected, this::capNhatDanhSach).show();
             return true;
         });
     }
@@ -74,23 +74,27 @@ public class MainActivity extends AppCompatActivity {
     private void capNhatDanhSach() {
         switch (loaiHienTai) {
             case "all":
-                currentList = repository.getAllPhuKien();
+                currentList = repository.getAllNongSan();
                 break;
-            case "macbook":
-                currentList = repository.timMacBookDuoi500k();
+            case "recent":
+                currentList = repository.getThuHoachGanDay();
                 break;
-            case "chuot":
-                currentList = repository.getPhuKienTheoLoai(1);
+            case "rau":
+                currentList = repository.getNongSanTheoLoai(1);
                 break;
-            case "banphim":
-                currentList = repository.getPhuKienTheoLoai(2);
+            case "cu":
+                currentList = repository.getNongSanTheoLoai(2);
                 break;
-            case "oplung":
-                currentList = repository.getPhuKienTheoLoai(3);
+            case "traicay":
+                currentList = repository.getNongSanTheoLoai(3);
                 break;
         }
 
-        adapter = new PhuKienAdapter(this, currentList);
+        adapter = new NongSanAdapter(this, currentList);
         listView.setAdapter(adapter);
+        
+        if (currentList.isEmpty()) {
+            Toast.makeText(this, "Không có dữ liệu", Toast.LENGTH_SHORT).show();
+        }
     }
 }
